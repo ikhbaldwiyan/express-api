@@ -131,7 +131,6 @@ const liveInfoApi = (req, res) => {
         })
     } else {
         const name = profileApi.room_name;
-        res.status(404);
         res.send({
             message: `${name} is not live`,
             is_onlive: profileApi.is_onlive
