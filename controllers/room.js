@@ -2,7 +2,7 @@ const axios = require('axios');
 const { room, live } = require('../utils/api');
 const formatTime = require('../utils/formatTime');
 
-let data = [];
+let profile = [];
 let schedule = '';
 let liveInfo = [];
 let liveTitle = '';
@@ -12,12 +12,12 @@ let comments = [];
 const getProfile = (roomId) => {
     axios.get(`${room}/profile?room_id=${roomId}`)
     .then(response => {
-        data = response.data
+        profile = response.data
     })
     .catch(error => {
-        return error;
+        console.log(error);
     });
-    return data;
+    return profile;
 }
 
 // Get Next Live API
@@ -86,7 +86,9 @@ const getDetailRoom = (req, res) => {
     const data = getProfile(roomId);
     const profile = profileData(data);
 
-    res.send({profile});
+    if (roomId !== undefined) {
+        res.send({profile});
+    }
 }
 
 // Get Comments API 
@@ -125,7 +127,7 @@ const liveInfoApi = (req, res) => {
     const getTitle = getLiveTitle(roomId);
     const liveTime = formatTime(profileApi.current_live_started_at);
 
-    if (profileApi.is_onlive) {
+    if (profileApi.is_onlive && roomId && comments) {
         res.send({
             name: profileApi.room_name,
             views: profileApi.view_num,
