@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { getDetailRoom, getFansLetter, liveInfoApi } = require('../controllers/room');
+const { getProfileRoom, liveInfoApi, commentApi } = require('../controllers/room');
 
-router.get('/profile/:roomId', getDetailRoom);
-router.get('/fans-letter/:roomId', getFansLetter);
+router.get('/profile/:roomId', getProfileRoom);
 router.get('/live/:roomId', liveInfoApi)
-router.get('/comments/:roomId', liveInfoApi)
+router.get('/comments/:roomId', commentApi)
 
 module.exports = router;

@@ -50,11 +50,14 @@ const profileData = (data) => {
     }
 }
 
-// Get Fans Letter from profile
-const getFansLetter = (req, res) => {
-    const data = getProfile(req.params.roomId);
-    const fansLetter = data.recommend_comment_list;
-    res.send({data: fansLetter});
+const getProfileRoom = (req, res) => {
+    const roomId = req.params.roomId;
+    const data = getProfile(roomId);
+    const profile = profileData(data);
+
+    if (roomId !== undefined) {
+        res.send({profile});
+    }
 }
 
 // Get Stream URL API
@@ -81,16 +84,6 @@ const getLiveTitle = (roomId) => {
     return liveTitle;
 }
 
-const getDetailRoom = (req, res) => {
-    const roomId = req.params.roomId;
-    const data = getProfile(roomId);
-    const profile = profileData(data);
-
-    if (roomId !== undefined) {
-        res.send({profile});
-    }
-}
-
 // Get Comments API 
 const getComments = (roomId) => {
     axios.get(`${live}/comment_log?room_id=${roomId}`)
@@ -109,7 +102,7 @@ const getComments = (roomId) => {
                 id: item.user_id,
                 time: formatTime(item.created_at),
                 name: item.name,
-                comments: item.comment,
+                comment: item.comment,
                 avatar_url: item.avatar_url
             }
             return newComments.push(newComment);
@@ -133,9 +126,8 @@ const liveInfoApi = (req, res) => {
             views: profileApi.view_num,
             liveTime: liveTime,
             title: getTitle,
-            url: streamUrl[0],
-            is_onlive: profileApi.is_onlive,
-            comments: getComments(roomId)
+            url: streamUrl,
+            is_onlive: profileApi.is_onlive
         })
     } else {
         const name = profileApi.room_name;
@@ -145,7 +137,11 @@ const liveInfoApi = (req, res) => {
             is_onlive: profileApi.is_onlive
         })
     }
-
 }
 
-module.exports = { getDetailRoom, getFansLetter, liveInfoApi };
+const commentApi = (req, res) => {
+    const comments = getComments(req.params.roomId);
+    res.send(comments)
+}
+
+module.exports = { getProfileRoom, liveInfoApi, commentApi };

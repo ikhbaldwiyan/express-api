@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //routes
 const userRouter = require('./routes/users');
 const roomRouter = require('./routes/rooms');
 
 const app = express();
+app.use(cors())
 const PORT = 8000;
 
 app.use(bodyParser.json());
