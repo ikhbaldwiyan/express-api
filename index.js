@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 //routes
+const homeRouter = require('./routes/home');
 const userRouter = require('./routes/users');
 const roomRouter = require('./routes/rooms');
 
@@ -11,6 +12,7 @@ const PORT = 8000;
 
 app.use(cors())
 app.use(bodyParser.json());
+app.use('/', homeRouter);
 app.use('/users', userRouter);
 app.use('/rooms', roomRouter);
 app.listen(PORT, () => console.log(`Server Running on port http://localhost:${PORT}`));
