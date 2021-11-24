@@ -7,9 +7,9 @@ const userRouter = require('./routes/users');
 const roomRouter = require('./routes/rooms');
 
 const app = express();
-app.use(cors())
 const PORT = 8000;
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use('/users', userRouter);
 app.use('/rooms', roomRouter);

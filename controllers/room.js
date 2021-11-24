@@ -1,6 +1,5 @@
 const axios = require('axios');
 const { room, live } = require('../utils/api');
-const formatTime = require('../utils/formatTime');
 
 let profile = [];
 let schedule = '';
@@ -100,7 +99,7 @@ const getComments = (roomId) => {
         if (item.comment.length !== '2' && item.comment.length !== '1') {
             const newComment = {
                 id: item.user_id,
-                time: formatTime(item.created_at),
+                time: item.created_at,
                 name: item.name,
                 comment: item.comment,
                 avatar_url: item.avatar_url
@@ -118,7 +117,7 @@ const liveInfoApi = (req, res) => {
     const profileApi = getProfile(roomId);
     const streamUrl = getLiveInfo(roomId)
     const getTitle = getLiveTitle(roomId);
-    const liveTime = formatTime(profileApi.current_live_started_at);
+    const liveTime = profileApi.current_live_started_at;
 
     if (profileApi.is_onlive && roomId && comments) {
         res.send({
